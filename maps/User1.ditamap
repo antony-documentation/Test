@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE bookmap PUBLIC "-//OASIS//DTD DITA BookMap//EN" "bookmap.dtd">
+<bookmap>
+    <booktitle>
+        <mainbooktitle>Operational Manual</mainbooktitle>
+    </booktitle>
+    <chapter href="../concept/use_case.dita"/>
+    <backmatter>
+        <booklists>
+            <indexlist/>
+            <glossarylist>
+                <topicref href="glossary.ditamap" format="ditamap"/>
+            </glossarylist>
+        </booklists>
+    </backmatter>
+</bookmap>
