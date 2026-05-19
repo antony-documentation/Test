@@ -1,0 +1,56 @@
+
+/* =========================================================
+   Figure Counter - GLOBAL CONTINUITY
+   ========================================================= */
+/* 1. Reset at the Map/Container level, NOT :root */
+*[class~="map/map"],
+body {
+    counter-reset: fig-count 0 !important;
+}
+
+/* 2. Figure Container: Increment the counter + Keep together */
+*[class~="topic/fig"] {
+    display: table !important;
+    width: auto; 
+    margin-left: auto;
+    margin-right: auto;
+    
+    /* Increment happens HERE */
+    counter-increment: fig-count !important;
+    line-height: normal;
+    
+    /* ADD THIS: Keep image + caption together */
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+}
+
+/* 2.5 ADD THIS: Image styling */
+*[class~="topic/fig"] > *[class~="topic/image"],
+*[class~="topic/fig"] img {
+    display: block !important;
+    margin: 0 auto !important;
+}
+
+/* 3. The Prefix: Display the counter */
+*[class~="topic/fig"] > *[class~="topic/title"]::before {
+    content: "Figure " counter(fig-count) ": " !important;
+    font-weight: normal;
+    display: inline !important;
+}
+
+/* 4. The Title/Caption Layout */
+*[class~="topic/fig"] > *[class~="topic/title"] {
+    display: table-caption !important;
+    caption-side: bottom !important; 
+    font-style: italic !important;
+    font-size: 10pt;
+    color: rgb(218, 33, 40) !important; 
+    text-align: center;
+    padding-top: 5mm; 
+}
+
+/* 5. Hide default Oxygen labels to prevent "Figure 1: Figure 1: Input" */
+*[class~="topic/fig"] > .fig--title-label,
+.figtitleprefix {
+    display: none !important;
+}

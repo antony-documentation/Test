@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<publishing-template>
+    <name>Robis Bar</name>
+    <description>This is test template</description>
+    <webhelp>
+        <preview-image file="resources/images/robis_design.png"/>
+        <parameters>
+            <parameter name="webhelp.show.main.page.tiles" value="yes"/>
+            <parameter name="webhelp.show.main.page.toc" value="no"/>
+            <parameter name="webhelp.top.menu.depth" value="3"/>
+            <parameter name="args.figurelink.style" value="TITLE"/>
+            <parameter name="args.tablelink.style" value="TITLE"/>
+            <parameter name="force-unique" value="true"/>
+        </parameters>
+        <resources>
+            <css file="oxygen.css"/>
+            <css file="notes.css"/>
+            <css file="custom.css"/>         
+            <logo file="resources/images/Robis_red.png"/>
+            <fileset>
+                <include name="resources/images/robis_design.png"/>
+                <include name="resources/**/*"/>
+                <exclude name="resources/**/*.svn"/>
+                <exclude name="resources/**/*.git"/>
+                
+            </fileset>
+        </resources>
+        <tags>
+            <tag type="layout">tiles</tag>
+            <tag type="color">red</tag>
+        </tags>
+    </webhelp>
+    <pdf>
+        <preview-image file="resources/images/robis_design.png"/>
+        <tags>
+            <tag type="color">light</tag>
+        </tags>
+        <parameters>
+            <parameter name="args.chapter.layout" value="BASIC"/>
+            <parameter name="generate.toc" value="toc,figure,table"/>
+            <parameter name="args.bookmap-order" value="frontmatter,toc,chapter,appendix,backmatter"/>
+            
+            
+            <!-- ADD THESE PARAMETERS TO ELIMINATE BLANK PAGE -->
+            <parameter name="force-page-count" value="auto"/>
+            <parameter name="mirror-page-margins" value="no"/>
+            <parameter name="page-number-recto-first" value="no"/>
+            <parameter name="page-number-verso-first" value="no"/>
+            <parameter name="pdf.font.embed" value="true"/>
+            
+        </parameters>
+        <resources>
+            <css file="oxygen-print.css"/>
+            <css file="notes.css"/>
+            <css file="robis-print.css"/>
+            <css file="table.css"/>
+            <css file="figure.css"/>
+
+        </resources>
+    </pdf>
+</publishing-template>

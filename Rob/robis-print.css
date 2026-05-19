@@ -1,0 +1,976 @@
+/* =========================================================
+   DITA TASK STEPS & SUBSTEPS - FINAL SOLUTION
+   ========================================================= */
+
+/* Main steps - Arial */
+ol li,
+ol li::marker,
+ol li::-oxy-marker {
+    font-family: Arial !important;
+    font-size: 11pt !important;
+}
+
+/* Substeps - Arial Narrow (closest to Arial that works) */
+ol ol li::marker,
+ol ol li::-oxy-marker {
+    font-family: "Arial Narrow" !important;
+    font-size: 11pt !important;
+}
+
+/* =========================================================
+   COVER PAGE - ABSOLUTE LAYOUT
+   ========================================================= */
+
+@page front-page {
+    size: A4;
+    margin: 0;
+    background-image: url("resources/images/cp2.png");
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: 100% 100%;
+}
+
+/* 1. MAIN TITLE  - Moves to top of page */
+*[class~="bookmap/mainbooktitle"] {
+    position: absolute !important;
+    top: 225mm !important; /* Adjust this to move the red title up/down */
+    left: 16mm !important;
+    width: 130mm !important;   /* Adjust width as needed */
+    text-align: left;
+    color: rgb(255, 255, 255); 
+    font-size: 40pt;
+    font-weight: bold;
+    z-index: 10;
+    line-height: 1.2;
+}
+
+/* 2. PRODUCT IMAGE - Positioned in the middle */
+*[class~="bookmap/booklibrary"] {
+    position: absolute !important;
+    top: 50mm !important; /* Starts safely below the title */
+    left: 0;
+    right: 0;
+    text-align: center;
+}
+
+*[class~="bookmap/booklibrary"] img {
+    height: auto;
+    width: auto;
+}
+
+/* 3. SUBTITLE (Manual Name) - Pushed below image */
+*[class~="bookmap/booktitlealt"] {
+    position: absolute !important;
+    top: 172mm !important; /* Pushes text below the 80mm image */
+    right: 17mm !important;
+    text-align: right;
+    font-size: 20pt;
+    color: rgb(213, 40, 33);
+}
+
+*[class~="bookmap/bookmeta"] {
+    display: block !important; /* Force it to exist in the layout */
+    visibility: visible !important; 
+    position: absolute !important;
+    top: 186mm !important;
+    right: 17mm !important;
+    text-align: right;
+    z-index: 100; /* Ensure it is above the background image */
+}
+
+
+/* Ensure the parent containers aren't hidden */
+*[class~="bookmap/bookid"] {
+    display: block !important;
+}
+
+*[class~="bookmap/edition"] {
+    display: block !important;
+    font-size: 14pt;
+    color: rgb(116, 116, 116);
+    font-weight: bold;
+    visibility: visible !important;
+}
+
+/* =========================================================
+   0. FRONTMATTER PAGE (Company Profile) - BEFORE TOC
+   ========================================================= */
+@page frontmatter-page {
+    size: A4;
+    margin: 25mm 20mm 25mm 20mm;
+    
+    /* --- HEADER: Logo in top-right (same as TOC) --- */
+    @top-right {
+        content: "";
+        background-image: url("resources/images/m_logo.jpg") !important;
+        background-repeat: no-repeat;
+        background-position: right 50px; 
+        background-size: 90px auto;
+        display: block !important;
+    }
+    
+    @top-left { content: none !important; }
+    @top-center { content: none !important; }
+    
+    /* --- FOOTER: Branding logo in bottom-left (same as TOC) --- */
+    @bottom-left {
+        content: "";
+        background-image: url("resources/images/Robis_red.png");
+        background-repeat: no-repeat;
+        background-size: 60px auto;
+        background-position: left 15px; 
+        border-top: none !important;
+
+    }
+    
+    @bottom-center {
+        content: "" !important;
+        border-top: none !important; 
+    }
+    
+    /* --- NO PAGE NUMBER --- */
+    @bottom-right {
+        content: "";
+        background-image: url("resources/images/p2m.png");
+        background-repeat: no-repeat;
+        background-size: 200px auto;
+        background-position: right 15px; 
+        border-top: none !important;
+    }
+}
+
+
+/* Frontmatter title styling */
+*[class~="topic/topic"][outputclass~="frontmatter-page"]
+> *[class~="topic/title"] {
+    color: rgb(218, 33, 40);   /* change to any color you want */
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 26pt;
+    font-weight: bold;
+}
+
+
+*[class~="topic/topic"][outputclass~="frontmatter-page"] {
+    page: frontmatter-page !important;
+    page-break-after: always;
+    /* Don't reset counter here - we want TOC to start at i */
+}
+
+/* Add this if you want to explicitly skip the frontmatter page in the TOC count */
+*[class~="map/topicref"][outputclass~="frontmatter-page"] {
+    counter-increment: none !important;
+}
+
+/* Make frontmatter body a vertical container */
+*[class~="topic/topic"][outputclass~="frontmatter-page"]
+> *[class~="topic/body"] {
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
+}
+
+/* Fix Contact position */
+*[class~="topic/topic"][outputclass~="frontmatter-page"]
+.section.bottom-section {
+    position: absolute;
+    bottom: 80mm;     /* FIXED distance from bottom */
+    left: 0;
+    right: 0;
+}
+
+/* Contact title: color and size */
+*[class~="topic/topic"][outputclass~="frontmatter-page"]
+.section.bottom-section
+> *[class~="topic/title"] {
+    color: rgb(218, 33, 40);   /* change color as needed */
+    font-size: 16pt;         /* change size as needed */
+    font-weight: bold;       /* optional */
+}
+
+
+
+/* =========================================================
+   1. TOC PAGE LAYOUT (Cleaned Footer - No Lines, No Shapes)
+   ========================================================= */
+@page toc {
+    size: A4;
+    margin: 25mm 20mm 25mm 20mm;
+    
+
+/* Use @top-right for the logo to ensure it repeats on EVERY 'toc' page */
+    @top-right {
+        content: "";
+        background-image: url("resources/images/m_logo.jpg") !important;
+        background-repeat: no-repeat;
+        /* Using 'right center' is safer than fixed pixels for multi-page layouts */
+        background-position: right 50px; 
+        background-size: 90px auto;
+        display: block !important;
+    }
+
+    /* --- Bottom Left: Branding Logo --- */
+
+    @bottom-left {
+        content: "";
+        background-image: url("resources/images/Robis_red.png");
+        background-repeat: no-repeat;
+        background-size: 60px auto;
+        background-position: left 15px; 
+        border-top: none !important;
+
+    }
+
+    /* --- Center: Empty space to keep the red line going --- */
+    @bottom-center {
+        content: string(maptitle);
+        line-height: 35px;
+        text-align: center;
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 11pt;
+        color: rgb(37, 59, 97); /* Navy Blue */
+        border-top: none !important;
+        
+    }
+    @bottom-right {
+        content: counter(page, lower-roman) !important;
+        background-image: none !important; 
+        border-top: none !important;
+        width: 30px;
+        height: 30px;
+        line-height: 35px;
+        text-align: center;
+        color: black !important; 
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 11pt;
+    }
+
+    /* Clear unused boxes */
+    @top-right, @top-center { content: none !important; }
+}
+
+
+/* 2. TOC Container - Start counting from i */
+div[class~="toc/toc"] {
+    string-set: header-title "";
+    page: toc !important;
+    page-break-before: always;
+    /* Force the page counter to reset to 1 at the start of the TOC */
+    counter-reset: page 1 !important; 
+}
+
+/* 3. Ensure your @page toc:first does NOT have a conflicting reset */
+/* You can remove the counter-reset from @page toc:first if you put it in the div rule above */
+@page toc:first {
+    @top-left   { content: ""; }
+    @top-center { content: ""; }
+}
+
+
+@page toc {
+    @top-left { 
+        content: string(list-header, first) "Table of Contents";
+        color: rgb(37, 59, 97); 
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 12pt;
+        padding-top: 30px;
+    }
+    @top-center { content: ""; }
+}
+
+/* =========================================================
+   2. REMOVE i18n-GENERATED "Contents"
+   ========================================================= */
+
+/* Remove engine-generated TOC label */
+*[class~="toc/toc"]::before {
+    content: none !important;
+    display: none !important;
+}
+
+/* Remove all TOC placeholder titles */
+*[class~="toc/toc"] 
+*[class~="ot-placeholder/toc"],
+*[class~="toc/title"],
+*[class~="toc/title"]::before {
+    content: none !important;
+    display: none !important;
+}
+
+/* Hide the first auto title if present */
+*[class~="toc/toc"] > *[class~="topic/title"]:first-of-type {
+    display: none !important;
+}
+
+/* =========================================================
+   3. CUSTOM TOC TITLE
+   ========================================================= */
+
+*[class~="toc/toc"] > *[class~="topic/title"] {
+    content: "Table of Contents" !important;
+
+    color: rgb(218, 33, 40) !important;
+    font-family: Arial, Helvetica, sans-serif !important;
+    font-size: 26pt !important;
+    font-weight: bold !important;
+
+    display: block !important;
+    margin-bottom: 15mm !important;
+    text-align: left !important;
+}
+
+
+/* =========================================================
+   4. TOC ENTRY LAYOUT (Hierarchical)
+   ========================================================= */
+
+/* Base style for all entries */
+*[class~="toc/toc"] *[class~="map/topicref"] {
+    display: block !important;
+    margin-top: 5pt;
+}
+
+/* Indentation for 2nd Level Headings */
+*[class~="toc/toc"] *[class~="map/topicref"] *[class~="map/topicref"] {
+    margin-left: 20pt !important; /* This creates the hierarchy */
+    font-size: 10pt;
+}
+
+*[class~="toc/toc"] *[class~="map/topicref"] > *[class~="map/topicmeta"] {
+    margin-left: 0 !important;
+    padding-left: 0 !important;
+    text-indent: 0 !important;
+}
+
+
+
+/* =========================================================
+   6. TOC GLOBAL FONT CONSISTENCY
+   ========================================================= */
+
+/* Set a single font size and weight for all TOC elements and their numbers */
+*[class~="toc/toc"] *[class~="topic/navtitle"],
+*[class~="toc/toc"] *[class~="topic/navtitle"]::before,
+*[class~="toc/toc"] *[class~="map/topicmeta"] {
+    font-size: 11pt !important;
+    font-weight: normal !important;
+    font-family: Arial, Helvetica, sans-serif !important;
+    color: black !important;
+}
+
+/* =========================================================
+   7. DEEP HIERARCHY NUMBERING - BOOKMAP VERSION
+   ========================================================= */
+
+/* Reset counters at the TOC container */
+*[class~="toc/toc"] {
+    counter-reset: toc1 0 toc2 0 toc3 0 toc4 0 !important;
+}
+
+/* Level 1: TARGET CHAPTERS ONLY */
+/* This skips the frontmatter topicref and only counts <chapter> elements */
+*[class~="toc/toc"] > *[class~="bookmap/chapter"] {
+    counter-increment: toc1 !important;
+    counter-reset: toc2 0 toc3 0 toc4 0 !important;
+}
+
+/* Level 2: Target nested topicrefs inside chapters */
+*[class~="toc/toc"] > *[class~="bookmap/chapter"] > *[class~="map/topicref"] {
+    counter-increment: toc2 !important;
+    counter-reset: toc3 0 toc4 0 !important;
+}
+
+/* Level 3 */
+*[class~="toc/toc"] > *[class~="bookmap/chapter"] > *[class~="map/topicref"] > *[class~="map/topicref"] {
+    counter-increment: toc3 !important;
+    counter-reset: toc4 0 !important;
+}
+
+/* Level 4 */
+*[class~="toc/toc"] > *[class~="bookmap/chapter"] > *[class~="map/topicref"] > *[class~="map/topicref"] > *[class~="map/topicref"] {
+    counter-increment: toc4 !important;
+}
+
+
+/* =========================================================
+   8. INJECTING NUMBERS (BookMap 4-Level Hierarchy)
+   ========================================================= */
+
+/* Level 1: Chapters (e.g., 1.) */
+*[class~="toc/toc"] > *[class~="bookmap/chapter"] 
+> *[class~="map/topicmeta"] > *[class~="topic/navtitle"]::before {
+    content: counter(toc1) ". " !important;
+}
+
+/* Level 2: First nested topic (e.g., 1.1) */
+*[class~="toc/toc"] > *[class~="bookmap/chapter"] > *[class~="map/topicref"] 
+> *[class~="map/topicmeta"] > *[class~="topic/navtitle"]::before {
+    content: counter(toc1) "." counter(toc2) " " !important;
+}
+
+/* Level 3: Second nested topic (e.g., 1.1.1) */
+*[class~="toc/toc"] > *[class~="bookmap/chapter"] > *[class~="map/topicref"] > *[class~="map/topicref"]
+> *[class~="map/topicmeta"] > *[class~="topic/navtitle"]::before {
+    content: counter(toc1) "." counter(toc2) "." counter(toc3) " " !important;
+}
+
+/* Level 4: Third nested topic (e.g., 1.1.1.1) */
+*[class~="toc/toc"] > *[class~="bookmap/chapter"] > *[class~="map/topicref"] > *[class~="map/topicref"] > *[class~="map/topicref"]
+> *[class~="map/topicmeta"] > *[class~="topic/navtitle"]::before {
+    content: counter(toc1) "." counter(toc2) "." counter(toc3) "." counter(toc4) " " !important;
+}
+
+
+/* =========================================================
+   9. INDENTATION FOR HIERARCHY
+   ========================================================= */
+*[class~="toc/toc"] *[class~="map/topicref"] *[class~="map/topicref"] { margin-left: 18pt !important; }
+*[class~="toc/toc"] *[class~="map/topicref"] *[class~="map/topicref"] *[class~="map/topicref"] { margin-left: 22pt !important; }
+
+
+
+
+/* =========================================================
+   LIST OF FIGURES & TABLES STYLING
+   ========================================================= */
+
+/* Force Figure/Table lists to use a custom page layout */
+*[class~="placeholder/figurelist"] {
+    page: figurelist !important;
+    page-break-before: always;
+}
+
+*[class~="placeholder/tablelist"] {
+    page: tablelist !important;
+    page-break-before: always;
+}
+
+/* =========================================================
+   LIST OF FIGURES PAGE LAYOUT
+   ========================================================= */
+
+@page figurelist {
+    size: A4;
+    margin: 25mm 20mm 25mm 20mm;
+    
+    /* Logo in top-right - EVERY PAGE */
+    @top-right {
+        content: "";
+        background-image: url("resources/images/m_logo.jpg") !important;
+        background-repeat: no-repeat;
+        background-position: right 50px; 
+        background-size: 90px auto;
+        display: block !important;
+    }
+
+    /* Header text - EVERY PAGE (will override on first) */
+    @top-left {
+        content: "List of Figures";
+        color: rgb(37, 59, 97); 
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 12pt;
+        padding-top: 30px;
+    }
+
+    @top-center { 
+        content: "" !important;
+    }
+
+    /* Bottom footer */
+ /* --- Left side: Chapter Title --- */
+    @bottom-left {
+        content: "";
+        background-image: url("resources/images/Robis_red.png");
+        background-repeat: no-repeat;
+        background-size: 60px auto;
+        background-position: left 15px; 
+        border-top: none !important;
+
+    }
+
+    /* --- Center: Empty space to keep the red line going --- */
+    @bottom-center {
+        content: string(maptitle);
+        line-height: 35px;
+        text-align: center;
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 11pt;
+        color: rgb(37, 59, 97); /* Navy Blue */
+        border-top: none !important;
+        
+    }
+    @bottom-right {
+        content: counter(page, lower-roman) !important;
+        background-image: none !important; 
+        border-top: none !important;
+        width: 30px;
+        height: 30px;
+        line-height: 35px;
+        text-align: center;
+        color: black !important; 
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 11pt;
+    }
+}
+
+/* ONLY override top-left on first page */
+@page figurelist:first {
+    @top-left { 
+        content: "" !important;
+    }
+}
+
+/* =========================================================
+   LIST OF TABLES PAGE LAYOUT
+   ========================================================= */
+
+@page tablelist {
+    size: A4;
+    margin: 25mm 20mm 25mm 20mm;
+    
+    /* Logo in top-right - EVERY PAGE */
+    @top-right {
+        content: "";
+        background-image: url("resources/images/m_logo.jpg") !important;
+        background-repeat: no-repeat;
+        background-position: right 50px; 
+        background-size: 90px auto;
+        display: block !important;
+    }
+
+    /* Header text - EVERY PAGE (will override on first) */
+    @top-left {
+        content: "List of Tables";
+        color: rgb(37, 59, 97); 
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 12pt;
+        padding-top: 30px;
+    }
+
+    @top-center { 
+        content: "" !important;
+    }
+
+    /* --- Left side: Chapter Title --- */
+    @bottom-left {
+        content: "";
+        background-image: url("resources/images/Robis_red.png");
+        background-repeat: no-repeat;
+        background-size: 60px auto;
+        background-position: left 15px; 
+        border-top: none !important;
+
+    }
+
+    /* --- Center: Empty space to keep the red line going --- */
+    @bottom-center {
+        content: string(maptitle);
+        line-height: 35px;
+        text-align: center;
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 11pt;
+        color: rgb(37, 59, 97); /* Navy Blue */
+        border-top: none !important;
+        
+    }
+    @bottom-right {
+        content: counter(page, lower-roman) !important;
+        background-image: none !important; 
+        border-top: none !important;
+        width: 30px;
+        height: 30px;
+        line-height: 35px;
+        text-align: center;
+        color: black !important; 
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 11pt;
+    }
+}
+
+/* ONLY override top-left on first page */
+@page tablelist:first {
+    @top-left { 
+        content: "" !important;
+    }
+}
+
+/* =========================================================
+   TITLE STYLING
+   ========================================================= */
+
+/* Style the Titles (List of Figures / List of Tables) */
+*[class~="placeholder/figurelist"] > *[class~="topic/title"],
+*[class~="placeholder/tablelist"] > *[class~="topic/title"] {
+    font-size: 26pt;
+    font-weight: bold;
+    color: rgb(218, 33, 40);
+    font-family: Arial, Helvetica, sans-serif;
+    margin-bottom: 15mm;
+    display: block;
+    text-align: left;
+}
+
+/* Create the dotted leader and page numbers for the lists */
+*[class~="ot-placeholder/figurelist_entry"]::after,
+*[class~="ot-placeholder/tablelist_entry"]::after {
+    content: leader('.') target-counter(attr(href), page);
+    float: right;
+}
+
+/* Indent entries slightly */
+*[class~="ot-placeholder/figurelist_entry"],
+*[class~="ot-placeholder/tablelist_entry"] {
+    display: block;
+    margin-bottom: 5px;
+    margin-top: 5pt;
+    text-decoration: none;
+    color: black;
+    font-size: 11pt;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+
+
+/* =========================================================
+   9. CHAPTER PAGES - FORCED RESET
+   ========================================================= */
+
+/* 1. Global Reset for the Book */
+*[class~="map/map"],
+*[class~="bookmap/bookmap"] {
+    counter-reset: chapter 0;
+}
+
+
+/* Increment chapter counter for every chapter */
+*[class~="topic/topic"][is-chapter]:not([is-part]) {
+    counter-increment: chapter;
+    page: chapter !important;
+    page-break-before: always !important;
+}
+
+*[class~="toc/toc"] + *[class~="topic/topic"][is-chapter],
+*[class~="placeholder/tablelist"] + *[class~="topic/topic"][is-chapter],
+*[class~="placeholder/figurelist"] + *[class~="topic/topic"][is-chapter] {
+    -oxy-page-group: start !important;
+    counter-reset: page 1 !important;   /* REMOVE chapter reset */
+}
+
+
+
+/* =========================================================
+   10. BACKMATTER / LAST PAGE
+   ========================================================= */
+
+/* 1. Target the topic container */
+*[class~="topic/topic"][outputclass~="last-page"] {
+    page: last-page !important;
+    page-break-before: always !important;
+}
+/* 2. Position the 'robis_end' image at the BOTTOM of the body */
+*[class~="topic/topic"][outputclass~="last-page"] *[class~="topic/body"] {
+    display: block !important;
+    text-align: center !important;
+    /* Use padding or margin to push it to the bottom */
+    padding-top: 80mm !important; 
+}
+
+/* 3. Define the page layout */
+@page last-page {
+    size: A4;
+    margin: 35mm 20mm 25mm 20mm; 
+
+    /* --- HEADER: ONLY LOGO, NO TEXT, NO NUMBERS --- */
+    @top-right {
+        content: "";
+        background-image: url("resources/images/m_logo.jpg") !important;
+        background-repeat: no-repeat;
+        background-position: right 50px; 
+        background-size: 90px auto;
+        display: block !important;
+    }
+    
+    @top-left { content: none !important; }
+    @top-center { content: none !important; }
+    
+    /* --- FOOTER: Branding logo in bottom-left (same as TOC) --- */
+    @bottom-left {
+        content: "";
+        background-image: url("resources/images/Robis_red.png");
+        background-repeat: no-repeat;
+        background-size: 60px auto;
+        background-position: left 15px; 
+        border-top: none !important;
+
+    }
+    
+    @bottom-center {
+        content: "" !important;
+        border-top: none !important; 
+    }
+    
+    /* --- NO PAGE NUMBER --- */
+    @bottom-right {
+        content: "";
+        background-image: url("resources/images/p2m.png");
+        background-repeat: no-repeat;
+        background-size: 200px auto;
+        background-position: right 15px; 
+        border-top: none !important;
+    }
+}
+
+/* Hide the topic title */
+*[class~="topic/topic"][outputclass~="last-page"] > *[class~="topic/title"] {
+    display: none !important;
+}
+
+
+
+
+
+/* =========================================================
+   CHAPTER TITLE & HEADER STRING
+   ========================================================= */
+
+/* Chapter number before title in BODY (large red number on new line) */
+*[class~="topic/topic"][is-chapter]:not([is-part]) > [class~="topic/title"]::before {
+    content: counter(chapter) ".\A";
+    font-size: 3em;
+    color: rgb(218, 33, 40);
+    font-weight: normal; 
+}
+
+/* Chapter title styling + capture for page HEADER */
+*[class~="topic/topic"][is-chapter]:not([is-part]) > [class~="topic/title"] {
+    /* Capture chapter number + title for page header */
+    string-set: header-title counter(chapter) ". " content();
+    
+    /* Body title styling */
+    color: rgb(218, 33, 40);
+    font-family: Arial;
+    font-size: 36pt;
+    font-weight: bold;
+}
+
+/* =========================================================
+   HEADING NUMBERING & STYLING (Levels 2-4)
+   ========================================================= */
+
+/* Initialize/Reset all sub-counters when a chapter starts */
+*[class~="topic/topic"][is-chapter] {
+    counter-reset: level2 0 level3 0 level4 0;
+}
+
+/* --- LEVEL 2 (e.g., 1.1) --- */
+*[class~="topic/topic"] *[class~="topic/topic"] {
+    counter-increment: level2;
+    counter-reset: level3 0 level4 0;
+
+
+}
+
+*[class~="topic/topic"] *[class~="topic/topic"] > [class~="topic/title"]::before {
+    content: counter(chapter) "." counter(level2) " ";
+    font-size: 28pt;
+}
+
+*[class~="topic/topic"] *[class~="topic/topic"] > [class~="topic/title"] {
+    font-size: 28pt;
+    color: rgb(218, 33, 40); /* Motherson Red */
+    font-weight: bold;
+    padding-top: 0.4em; /* Works better at top of page */
+}
+
+/* --- LEVEL 3 (e.g., 1.1.1) --- */
+*[class~="topic/topic"] *[class~="topic/topic"] *[class~="topic/topic"] {
+    counter-increment: level3;
+    counter-reset: level4 0;
+}
+
+*[class~="topic/topic"] *[class~="topic/topic"] *[class~="topic/topic"] > [class~="topic/title"]::before {
+    content: counter(chapter) "." counter(level2) "." counter(level3) " ";
+    font-size: 22pt;
+}
+
+*[class~="topic/topic"] *[class~="topic/topic"] *[class~="topic/topic"] > [class~="topic/title"] {
+    font-size: 22pt;
+    color: rgb(218, 33, 40); /* Motherson Red */
+    font-weight: bold;
+}
+
+/* --- LEVEL 4 (e.g., 1.1.1.1) --- */
+*[class~="topic/topic"] *[class~="topic/topic"] *[class~="topic/topic"] *[class~="topic/topic"] {
+    counter-increment: level4;
+}
+
+*[class~="topic/topic"] *[class~="topic/topic"] *[class~="topic/topic"] *[class~="topic/topic"] > [class~="topic/title"]::before {
+    content: counter(chapter) "." counter(level2) "." counter(level3) "." counter(level4) " ";
+    font-size: 16pt;
+}
+
+*[class~="topic/topic"] *[class~="topic/topic"] *[class~="topic/topic"] *[class~="topic/topic"] > [class~="topic/title"] {
+    font-size: 16pt;
+    color: rgb(218, 33, 40); /* Motherson Red */
+    font-weight: bold;
+}
+
+
+
+
+
+
+/* =========================================================
+   Base page layout – NO HEADER here
+   ========================================================= */
+
+@page {
+    size: A4;
+    margin: 20mm 20mm 20mm 20mm;
+
+    /* --- Left side: Chapter Title --- */
+    @bottom-left {
+        content: "";
+        background-image: url("resources/images/Robis_red.png");
+        background-repeat: no-repeat;
+        background-size: 60px auto;
+        background-position: left 15px; 
+
+        border-top: 1px solid red;
+        padding-top: 10px;
+        vertical-align: top;
+    }
+
+    /* --- Center: Empty space to keep the red line going --- */
+    @bottom-center {
+        content: string(maptitle);
+        line-height: 35px;
+        text-align: center;
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 11pt;
+        color: rgb(37, 59, 97); /* Navy Blue */
+        
+        border-top: 1px solid red;
+        padding-top: 10px; /* Space between line and text */
+        vertical-align: top;
+    }
+
+    /* --- Right side: Page Number in Shape --- */
+    @bottom-right {
+        content: counter(page);
+        
+        /* Box sizing for the red circle */
+        width: 30px;
+        height: 30px;
+        line-height: 35px;
+        text-align: center;
+        
+        margin-left: 180px;
+        margin-bottom: 25px;
+        
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 11pt;
+        color: white;
+
+        /* Shape background - Positioned relative to box edge */
+        background-image: url("resources/images/page_shape.png");
+        background-repeat: no-repeat;
+        background-size: 30px 30px;
+        background-position: 182px 12.5px; 
+
+        border-top: 1px solid red;
+        padding-top: 10px;
+        vertical-align: top;
+    }
+}
+
+/* =========================================================
+   Chapter pages – CONTINUED (default)
+   ========================================================= */
+   
+@page chapter {
+    size: A4;
+    margin: 20mm 20mm 20mm 20mm;
+    
+    @top-left {
+        content: string(header-title);
+        font-size: 12pt;
+        font-family: Arial, Helvetica, sans-serif;
+        color: rgb(37, 59, 97);
+        text-align: left;
+
+        border-bottom: 1px solid red;
+        
+        margin-bottom: 30px;  /* ← ADD THIS: Space between red line and content */
+        
+        padding-top: 40px;
+
+    }
+    
+        /* Center: empty, but keeps the red line continuous */
+    @top-center {
+        content: "";
+        border-bottom: 1px solid red;
+        margin-bottom: 30px;  /* ← ADD THIS: Space between red line and content */
+        padding-top: 40px;
+    }
+    
+    /* Right: image only */
+    @top-right {
+        content: "";
+
+        background-image: url("resources/images/m_logo.jpg");
+        background-repeat: no-repeat;
+        background-position: right 40px;
+        background-size: 100px auto;
+        
+        border-bottom: 1px solid red;
+        margin-bottom: 30px;  /* ← ADD THIS: Space between red line and content */
+        padding-top: 40px;
+
+    }
+}
+
+/* Use @page only once at the start of the list */
+@page chapter:first, chapter:first:right, chapter:first:left {
+    @top-left {
+        content: string(header-title);
+        border-bottom: 1px solid red;
+        font-size: 12pt;
+        color: rgb(37, 59, 97);
+        margin-bottom: 30px;  /* ← ADD THIS: Space between red line and content */
+        
+    }
+    
+        /* Logo / image ONLY in top-right */
+    @top-right {
+        content: "";
+ 
+        margin-bottom: 30px;  /* ← ADD THIS: Must match @top-left */
+        background-image: url("resources/images/m_logo.jpg");
+        background-repeat: no-repeat;
+        background-position: right 40px;  /* centered */
+        background-size: 100px auto;
+    }
+    
+    /* Ensure other boxes do not split the header width */
+    @top-center {
+        content: "";
+        margin-bottom: 30px;  /* ← ADD THIS: Must match @top-left */
+
+
+    }
+}
+
+
+
+
+
+/* =========================================================
+   Global font - DEFAULT ONLY
+   ========================================================= */
+body {
+    font-family: Arial, Helvetica, sans-serif !important;
+    font-size: 11pt; /* Remove !important so it can be overridden */
+}
+
+

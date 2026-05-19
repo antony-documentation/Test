@@ -1,0 +1,46 @@
+@import url('https://fonts.googleapis.com/css2?family=Grenze:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+.wh_logo {
+    position: absolute;
+    top: 40px;
+    left: 15px;
+}
+
+.wh_logo img{
+    height: 50px; 
+}
+
+
+.wh_publication_title{
+    font-family: "Grenze", serif;
+    font-weight: 800;
+    font-style: normal; 
+    font-size: 30px;
+}
+
+
+.wh_top_menu{
+    font-family: "Grenze", serif;
+    font-weight: 400;
+    font-style: normal; 
+    font-size: 15px;
+    position: absolute;
+    top: 50px;
+    left: 70%;
+    transform: translateX(-20%);
+}
+.wh_tile {
+    background-color: rgba(255, 0, 0, 0.1);
+}
+
+.wh_tile_text{
+    font-family: "Grenze", serif;
+    font-weight: 400;
+    font-style: normal;
+    
+}
+.wh_search_input.navbar-form.wh_main_page_search.search {
+    background-image: url("resources/images/robis_design.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+}
