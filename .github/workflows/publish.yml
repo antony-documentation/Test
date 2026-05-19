@@ -30,11 +30,12 @@ jobs:
         wget https://github.com/dita-ot/dita-ot/releases/download/4.3.1/dita-ot-4.3.1.zip
         unzip dita-ot-4.3.1.zip
 
-    - name: Build PDF
+    - name: Build PDF using OPT file
       run: |
         ./dita-ot-4.3.1/bin/dita \
         -i maps/manual.ditamap \
         -f pdf \
+        --propertyfile=Rob/robis.opt \
         -o published/pdf
 
     - name: Commit PDF Output
