@@ -43,9 +43,8 @@ jobs:
         -o published/pdf \
         --args.css=Rob/oxygen-print.css \
         --args.csspath=Rob \
-        --args.generate.toc=toc,figure,table \
         --args.chapter.layout=BASIC \
-        --args.bookmap-order=frontmatter,toc,chapter,appendix,backmatter \
+        --args.bookmap-order=retain \
         --force-unique=true
 
     - name: Verify PDF Output
