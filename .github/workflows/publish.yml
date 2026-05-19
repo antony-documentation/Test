@@ -34,8 +34,8 @@ jobs:
       run: |
         ./dita-ot-4.3.1/bin/dita \
         -i "maps/manual.ditamap" \
-        -f html5 \
-        -o published/html
+        -f pdf \
+        -o published/pdf
 
     - name: Commit Output
       run: |
