@@ -1,0 +1,44 @@
+name: Build and Publish DITA
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+
+    - name: Checkout Repository
+      uses: actions/checkout@v4
+
+    - name: Setup Java
+      uses: actions/setup-java@v4
+      with:
+        distribution: temurin
+        java-version: '17'
+
+    - name: Download DITA-OT
+      run: |
+        wget https://github.com/dita-ot/dita-ot/releases/download/4.3.1/dita-ot-4.3.1.zip
+        unzip dita-ot-4.3.1.zip
+
+    - name: Build HTML
+      run: |
+        ./dita-ot-4.3.1/bin/dita \
+        -i dita/maps/main.ditamap \
+        -f html5 \
+        -o published/html
+
+    - name: Commit Output
+      run: |
+        git config --global user.name "github-actions"
+        git config --global user.email "github-actions@github.com"
+
+        git add published/html
+
+        git commit -m "Auto publish HTML output" || echo "No changes"
+
+        git push
