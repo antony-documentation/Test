@@ -5,4 +5,6 @@
     <topicref href="../concept/overview%202.dita"/>
     <topicref href="../task/installation.dita"/>
     <topicref href="../reference/add_info.dita"/>
+    <topicref href="../task/installation.dita"/>
+    <topicref href="../concept/intro.dita"/>
 </map>
