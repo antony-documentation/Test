@@ -16,8 +16,6 @@ jobs:
 
     - name: Checkout Repository
       uses: actions/checkout@v4
-      with:
-        fetch-depth: 0
 
     - name: Setup Java
       uses: actions/setup-java@v4
@@ -30,11 +28,6 @@ jobs:
         wget https://github.com/dita-ot/dita-ot/releases/download/4.3.1/dita-ot-4.3.1.zip
         unzip dita-ot-4.3.1.zip
 
-    - name: Debug Repository Structure
-      run: |
-        pwd
-        find . -type f
-
     - name: Build PDF
       run: |
         ./dita-ot-4.3.1/bin/dita \
@@ -42,12 +35,15 @@ jobs:
         -f pdf \
         -o published/pdf \
         --args.css=Rob/oxygen-print.css \
-        --args.csspath=Rob \
+        --args.copycss=yes \
+        --args.cssroot=Rob \
         --args.chapter.layout=BASIC \
         --args.bookmap-order=retain \
+        --args.figurelink.style=TITLE \
+        --args.tablelink.style=TITLE \
         --force-unique=true
 
-    - name: Verify PDF Output
+    - name: Verify Output
       run: |
         ls -R published/pdf
 
