@@ -1,4 +1,4 @@
-name: Build and Publish DITA
+name: Build and Publish DITA PDF
 
 on:
   push:
@@ -30,22 +30,22 @@ jobs:
         wget https://github.com/dita-ot/dita-ot/releases/download/4.3.1/dita-ot-4.3.1.zip
         unzip dita-ot-4.3.1.zip
 
-    - name: Build HTML
+    - name: Build PDF
       run: |
         ./dita-ot-4.3.1/bin/dita \
-        -i "maps/manual.ditamap" \
+        -i maps/manual.ditamap \
         -f pdf \
         -o published/pdf
 
-    - name: Commit Output
+    - name: Commit PDF Output
       run: |
         git config --global user.name "github-actions"
         git config --global user.email "github-actions@github.com"
 
         git checkout revision1
 
-        git add published/html
+        git add published/pdf
 
-        git diff --cached --quiet || git commit -m "Auto publish HTML output"
+        git diff --cached --quiet || git commit -m "Auto publish PDF output"
 
         git push origin revision1
