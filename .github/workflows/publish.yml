@@ -30,23 +30,29 @@ jobs:
         wget https://github.com/dita-ot/dita-ot/releases/download/4.3.1/dita-ot-4.3.1.zip
         unzip dita-ot-4.3.1.zip
 
-    - name: Build PDF using OPT file
+    - name: Build PDF
       run: |
         ./dita-ot-4.3.1/bin/dita \
         -i maps/manual.ditamap \
         -f pdf \
-        --propertyfile=Rob/robis.opt \
-        -o published/pdf
+        -o published/pdf \
+        --args.css=Rob/oxygen-print.css \
+        --args.csspath=Rob \
+        --generate.toc=toc,figure,table \
+        --args.chapter.layout=BASIC \
+        --args.bookmap-order=frontmatter,toc,chapter,appendix,backmatter \
+        --force-page-count=auto
 
     - name: Commit PDF Output
       run: |
         git config --global user.name "github-actions"
         git config --global user.email "github-actions@github.com"
 
-        git checkout revision1
-
         git add published/pdf
 
-        git diff --cached --quiet || git commit -m "Auto publish PDF output"
-
-        git push origin revision1
+        if git diff --cached --quiet; then
+          echo "No changes to commit"
+        else
+          git commit -m "Auto publish PDF output"
+          git push origin revision1
+        fi
