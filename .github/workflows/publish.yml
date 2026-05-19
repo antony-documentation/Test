@@ -33,7 +33,7 @@ jobs:
     - name: Build HTML
       run: |
         ./dita-ot-4.3.1/bin/dita \
-        -i "Manual repo/maps/manual.ditamap" \
+        -i "Manual_repo/maps/manual.ditamap" \
         -f html5 \
         -o published/html
 
