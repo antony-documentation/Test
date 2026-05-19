@@ -3,4 +3,5 @@
 <map>
     <title>Manual</title>
     <topicref href="../concept/overview%202.dita"/>
+    <topicref href="../task/installation.dita"/>
 </map>
